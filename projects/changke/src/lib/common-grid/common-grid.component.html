@@ -1,0 +1,70 @@
+<ejs-grid
+  #grid
+  [id]="gridId"
+  [ngClass]="{ 'grid-loading': loaded }"
+  [dataSource]="loaded ? loadedSource : dataSource"
+  [allowPaging]="allowPaging && pageSettings"
+  [allowResizing]="true"
+  [allowReordering]="allowReordering"
+  [pageSettings]="pageSettings"
+  [sortSettings]="sortSettings"
+  [showColumnMenu]="showColumnMenu"
+  [allowSorting]="allowSorting && showColumnMenu"
+  [allowFiltering]="allowFiltering && showColumnMenu"
+  [allowExcelExport]="true"
+  [filterSettings]="filterSettings"
+  [resizeSettings]="resizeSettings"
+  [editSettings]="editSettings"
+  [allowSelection]="true"
+  [contextMenuItems]="dataSource && dataSource.length ? contextMenuItems : null"
+  (recordClick)="_recordClick($event)"
+  (recordDoubleClick)="_recordDoubleClick($event)"
+  (actionComplete)="_actionHandler($event)"
+  (actionBegin)="_actionBegin($event)"
+  (rowSelected)="_rowSelected($event)"
+  (rowDeselected)="_rowDeselected($event)"
+  style="border: none"
+  (contextMenuClick)="_onContextMenu($event)"
+  (contextMenuOpen)="contextMenuOpen($event)"
+  (queryCellInfo)="customiseCell($event)"
+  (columnDragStart)="_columnDragStart($event)"
+  (columnDrop)="_columnDrop($event)"
+  (rowDataBound)="_rowDataBound($event)"
+  [ngStyle]="{ height: gridHeight || '100%' }"
+>
+  <e-columns>
+    <e-column
+      type="checkbox"
+      [width]="checkBoxWidth"
+      textAlign="center"
+      *ngIf="showCheckBox"
+      [allowFiltering]="false"
+      [allowSorting]="false"
+      [customAttributes]="{ class: 'check-col' }"
+    ></e-column>
+    <e-column
+      *ngFor="let item of fields"
+      [field]="item.columnName"
+      [filter]="item.filter ? item.filter : { type: 'CheckBox' }"
+      [customAttributes]="
+        item.colName === 'entityUserList' || item.colName === 'kycProgress'
+          ? { class: 'hideColumnFilterClass' }
+          : {}
+      "
+      [headerText]="item.columnDisplayName"
+      [textAlign]="item.textAlign"
+      [showColumnMenu]="item.showColumnMenu === undefined ? true : false"
+      [allowFiltering]="item.allowFiltering === undefined ? true : false"
+      [allowSorting]="item.allowSorting === undefined ? true : false"
+      [type]="item.dataType"
+      [width]="item.width"
+      [format]="item.format"
+      [minWidth]="item.minWidth"
+      [visible]="item.visible"
+      [template]="item.showTemplate ? columnTemplate : undefined"
+      clipMode="EllipsisWithTooltip"
+      [sortComparer]="item.sortComparer"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
